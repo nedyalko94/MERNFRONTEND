@@ -20,7 +20,7 @@ const app = initializeApp(firebaseConfig);
 
 
 const storage  = getStorage(app)
-module.exports = storage 
+export default storage
 // export const deleteObjectfromStorage = deleteObject(app)
 
 

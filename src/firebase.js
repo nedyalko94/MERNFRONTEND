@@ -15,12 +15,7 @@ const firebaseConfig = {
     measurementId: "G-96X5D33CH8"
   };
 
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 const app = initializeApp(firebaseConfig);
-const storage = getStorage()
 
-export default function firebase() {
-  return (
-    <div>firebase</div>
-  )
-}
+export const storage = getStorage(app)

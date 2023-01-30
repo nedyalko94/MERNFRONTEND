@@ -57,7 +57,7 @@ useEffect(()=>{
   
   getShopList()
   
-},[Shopping,ShopList.length]) 
+},[Shopping,ShopList]) 
 
  
 

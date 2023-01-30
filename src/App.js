@@ -33,10 +33,9 @@ import History from './Pages/History'
  export const UserContexts = createContext(null)
 
 
-
+ 
 
 function App() {
-  //test
 
 
   const[AllProduct,setAllProduct]= useState([])
@@ -46,6 +45,7 @@ function App() {
   const [user,setUser]= useState()
   const [FilteredByCategories, setFilteredByCategories]= useState([])
   const[ProductInputSearch,setProductInputSearch]= useState(undefined)
+  const [msgModal,setMsgModal] = useState("")
 
 //========================Socket==========================
 // useEffect(()=>{
@@ -105,13 +105,12 @@ getUser()
 
 
 
-
+ 
 
 
 
   const login = async(e)=>{
     e.preventDefault()
-
     await fetch(`${server}/Users/login`, {
        credentials: 'include',
        method:'POST',
@@ -124,18 +123,19 @@ getUser()
        })
    })
    .then(res=> res.json())
-   .then(result=>{alert(result.msg) 
+   .then(result=>{
+    // alert(result.msg) 
        if(result.user){ return setUser(result.user)  }
       
     })
-   .then(data=>  console.log(data))
+  //  .then(data=>  console.log(data))
   //  .finally((data)=>{if (data !== undefined||null) { <Navigate to={'/'}/>}})
      
 }
 // http://localhost:3004/Users/logout
 
 
-const logOut = async() =>{
+const logOut = async(e) =>{
   await fetch(`${server}/Users/logout`,{
       credentials:'include',})
       .then(res=>res.json())
@@ -145,7 +145,7 @@ const logOut = async() =>{
   
 }
 
-
+ 
 
 //======================================================Product===================================
 
@@ -191,6 +191,7 @@ useEffect(() => {
       return setFilteredByCategories(myFilter) }
      
      )
+    
   
 
   useEffect(() => {
@@ -207,7 +208,14 @@ useEffect(() => {
     //http://localhost:3004/NewsLetter 
     const [Email,setEmail] = useState('')
 
-    const newsLetter = async()=>{
+    const newsLetter = async(e)=>{
+      // e.preventDefault()
+      if (Email ==="" || Email.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/g)=== null)
+      { if (Email !==" "){
+        setEmail(" ")
+      }
+        return setMsgModal("wrong email or empty input field")}
+
       await fetch(`${server}/NewsLetter`, {
          credentials: 'include',
          method:'POST',
@@ -217,10 +225,10 @@ useEffect(() => {
          body:JSON.stringify({
              "email":Email
              
-         })
+         }) 
      })
      .then(res=>res.json())
-     .then(data=>alert(data.msg))
+     .then(data=> setMsgModal(data.msg)) 
     }
 
 
@@ -230,17 +238,17 @@ useEffect(() => {
 
 <Layout username={username} user={user} password={password} login={login} logOut={logOut} categories={categories}
  categoriesFilter={categoriesFilter} inputHandler={inputHandler} setFilteredByCategories={setFilteredByCategories}
- setEmail={setEmail} newsLetter={newsLetter}
+ setEmail={setEmail} newsLetter={newsLetter} msgModal={msgModal} setMsgModal={setMsgModal}
  >
 
    <Routes>
 
       <Route path='/' element={<Home AllProduct={AllProduct} ProductInputSearch={ProductInputSearch} FilteredByCategories={FilteredByCategories} />} />
       <Route path='/Contact' element={<Contact/>}/>
-      <Route path='/Actions' element={<Actions/>}/>
+      <Route path='/Actions' element={<Actions AllProduct={AllProduct}/>}/>
       <Route path='/Register' element={<Register/>}/>
       <Route path='/Wishlist' element={<Wishlist/>}/>
-      <Route path='/Trending' element={<Trending/>}/>
+      <Route path='/Trending' element={<Trending AllProduct={AllProduct}/>}/>
       <Route path='/ShoppingCard' element={<ShoppingCard/>}/>
       <Route path='/ForgotPassword' element={<ForgotPassword/>}/>
       <Route path='/:id' element={<Detail/>}/>
@@ -261,7 +269,7 @@ useEffect(() => {
         <Route path='/ModifyUser' element={<ModifyUser AdminGetAllUser={AdminGetAllUser} setAdminSortUserBy={setAdminSortUserBy} setAdminInputSearchUser ={setAdminInputSearchUser} />  } />
 
       </Route>
-
+ 
    </Routes>
 
    </Layout> 

@@ -7,25 +7,42 @@ import server from "../../variable";
 
 export default function CreateUser() {
 const [ErrorMSG,setErrorMSG] = useState(undefined)
-
+const messageRef = useRef(null)
    const UserName = useRef('')
    const Email = useRef('')
    const Password = useRef('')
    const Password2 = useRef('')
    const FirstName = useRef('')
    const LastName = useRef('')
-   const [Gender , setGender] = useState('') 
+   const Gender = useRef('')
+  //  const [Gender , setGender] = useState('') 
    const Country = useRef('')
    const City = useRef('')
    const PostCode = useRef('')
    const Street = useRef('')
    const NumberOfStreet = useRef('')
-   const getFormData = useRef()
-   const genderRadio = (e) =>{
-     setGender(e.target.value)
-   }
-   
+  //  const getFormData = useRef()
+  //  const genderRadio = (e) =>{
+  //    setGender(e.target.value)
+  //  }
+ 
     const AddNewUser = (e)=> {
+      e.preventDefault()
+
+      // if(
+      //   UserName.current.value ==='' ||
+      //   Email.current.value ==='' ||
+      //   Password.current.value ==='' || 
+      //   Password2.current.value ==='' ||
+      //   FirstName.current.value ==='' ||
+      //   LastName.current.value ==='' ||
+      //   Gender.current.value ==='' ||
+      //   Country.current.value ==='' ||
+      //   City.current.value ==='' ||
+      //   PostCode.current.value ==='' ||
+      //   Street.current.value ==='' ||
+      //   NumberOfStreet.current.value ===''){return}
+
         fetch(`${server}/Users/register`,{ 
        method:'POST',
        headers:{
@@ -38,7 +55,7 @@ const [ErrorMSG,setErrorMSG] = useState(undefined)
          "Password2": Password2.current.value,
          "FirstName": FirstName.current.value, 
          "LastName": LastName.current.value,
-         "Gender":  Gender,
+         "Gender":  Gender.current.value,
          "Country": Country.current.value,
          "City":City.current.value,
          "PostCode":PostCode.current.value,
@@ -46,11 +63,12 @@ const [ErrorMSG,setErrorMSG] = useState(undefined)
          "NumberOfStreet":NumberOfStreet.current.value
        })
    })
-  .then(res=>res.json())
-  .then(data=>{
-        console.log(data.msg)
-        setErrorMSG(data.msg)
-  }) 
+   .then(res => res.json())
+   .then(data => {
+     setShow(true)
+     setErrorMSG(data.msg)
+   })
+   .then((e)=>   messageRef.current?.scrollIntoView({behavior: 'smooth'}))
  }
 
  // pop up msg 
@@ -62,29 +80,51 @@ const [ErrorMSG,setErrorMSG] = useState(undefined)
   return (
     <Container fluid className='mainContainer'>
                 <Row>
+                  <div ref={messageRef}></div>
          <DashboardMenu/>
 </Row >
     
-    < >
-    {ErrorMSG !== undefined ? 
-    ( ErrorMSG.map((err,index)=>    <div key={index}>
-    {  show?  <Alert key={index} variant="danger" onClose={() => setShow(false)} dismissible>
- 
-         <Alert.Heading>{err.msg}</Alert.Heading>
-         <div className="d-flex justify-content-end">
-         {/* // <Button onClick={() => setShow(true)}>Show Alert</Button> */}
-           
-         </div>
-       </Alert>:"" }
- 
-     </div>)):''
-    }
+< >
 
-    </>
+
+{ErrorMSG !== undefined ?
+  ErrorMSG[0].msg !== undefined ?
+    (
+      show ? <Alert  variant="danger" onClose={() => setShow(false)} dismissible>
+        {ErrorMSG.map((e,index) => (<Alert.Heading key={index}>{e.msg}</Alert.Heading>
+        ))}
+        <div className="d-flex justify-content-end">
+
+        </div>
+      </Alert> : ''
+
+
+    ) : (
+      show ? <Alert  variant="success" onClose={() => setShow(false)} dismissible>
+        {ErrorMSG.map((e,index) => (<Alert.Heading key={index}>{e.message}</Alert.Heading>
+        ))}
+        <Alert.Heading>{ErrorMSG.message}</Alert.Heading>
+
+        <div className="d-flex justify-content-end">
+
+        </div>
+      </Alert> : ''
+
+
+    )
+
+
+  : null
+}
+</>
+
+
+
       <Row md={2} className=' justify-content-center pt-5 '>
       <Form  
-      onSubmit={(e)=>e.preventDefault()} 
-       name={"user"} ref={getFormData}
+      
+      //  name={"user"} ref={getFormData}
+      className="pb-4"
        >
 
       <Form.Label aria-label="Name" >Username</Form.Label>
@@ -146,7 +186,7 @@ const [ErrorMSG,setErrorMSG] = useState(undefined)
     autoComplete='Repeat-password'
 
     
-  />
+  /> 
 </InputGroup>
 
 
@@ -182,34 +222,34 @@ const [ErrorMSG,setErrorMSG] = useState(undefined)
 
       <Form.Label aria-label="Name" >Gender</Form.Label>
 
-      {/* <InputGroup className="mb-3">
+      <InputGroup className="mb-3">
         <Form.Control
           placeholder="Gender"
           aria-label="Name"
           aria-describedby="basic-addon1"
           required
           name="Gender"
-         
+         ref={Gender}
 
           
         /> 
-              </InputGroup > */}
+              </InputGroup >
 
-         <InputGroup className="mb-3"   onChange={genderRadio } >
+         {/* <InputGroup className="mb-3"   onChange={genderRadio } >
        <InputGroup.Text label="men" name='Gender' checked value='men' defaultChecked={true} >Men</InputGroup.Text>
         <InputGroup.Radio label="men" name='Gender'  value='men'/>
         
         <InputGroup.Text aria-label="woman" value='woman' name='Gender'>Woman</InputGroup.Text>
-        <InputGroup.Radio aria-label="woman"  value='woman'  name='Gender'/>
+        <InputGroup.Radio aria-label="woman"  value='woman'  name='Gender'/> */}
        
-      </InputGroup >
+      {/* </InputGroup > */}
 
 
 
-
+      
      
     
-      <Form.Label aria-label="Name" >Country</Form.Label>
+  <Form.Label aria-label="Name" >Country</Form.Label>
 
 <InputGroup className="mb-3">
   <Form.Control
@@ -254,8 +294,8 @@ const [ErrorMSG,setErrorMSG] = useState(undefined)
 
       <InputGroup className="mb-3">
         <Form.Control
-          placeholder="Username"
-          aria-label="Name"
+          placeholder="Street"
+          aria-label="Street"
           aria-describedby="basic-addon1"
           required
           name="Street"
@@ -268,7 +308,7 @@ const [ErrorMSG,setErrorMSG] = useState(undefined)
 
       <InputGroup className="mb-3">
         <Form.Control
-          placeholder="Username"
+          placeholder="NumberOfStreet"
           aria-label="Name"
           aria-describedby="basic-addon1"
           required

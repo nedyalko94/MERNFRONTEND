@@ -2,55 +2,9 @@
 import React, { useRef } from 'react'
 import { Col, Container, Form, InputGroup, Row } from 'react-bootstrap'
 import {useTheme} from '../Context/ColorMode'
+import server from '../variable'
+
 // import { GoogleMap, useJsApiLoader,useLoadScript,Marker } from '@react-google-maps/api';
-
-
-
-// const containerStyle = {
-//   width: '100%',
-//   height: '20vw'
-// };
-
-// const center = {
-//   lat: 50.81629678907021, 
-//   lng: 4.407096001468849,
-// };
-
-// function MyComponent() {
-//   const { isLoaded } = useJsApiLoader({
-//     id: 'google-map-script',
-//     googleMapsApiKey: "AIzaSyCkTINyXr1CPSiUvAFmlXnhL0CfnvGji4s"
-//   })
-
-//   const [map, setMap] = useState(null)
-
-//   const onLoad = useCallback(function callback(map) {
-//     // This is just an example of getting and using the map instance!!! don't just blindly copy!
-//     const bounds = new window.google.maps.LatLngBounds(center);
-//     map.fitBounds(bounds);
-
-//     setMap(map)
-//   }, [])
-
-//   const onUnmount = useCallback(function callback(map) {
-//     setMap(null)
-//   }, [])
-
-//   return isLoaded ? (
-//       <GoogleMap
-//         mapContainerStyle={containerStyle}
-//         center={center}
-//         zoom={9}
-//         onLoad={onLoad}
-//         onUnmount={onUnmount}
-//       >
-//         { /* Child components, such as markers, info windows, etc. */ }
-//         <></>
-//       </GoogleMap>
-//   ) : <></>
-// }
-
-
 
 
  function Contact() {
@@ -61,8 +15,11 @@ import {useTheme} from '../Context/ColorMode'
   const message = useRef('')
 
   const sendEmail = async(e)=>{
-    e.preventDefault()
-     await fetch('http://localhost:3004/sendEmail',{
+    // e.preventDefault()
+
+        if (name.current.value ==='' || email.current.value === '' || subject.current.value === '' || message.current.value === '')
+    { return } 
+     await fetch(`${server}/sendEmail`,{
       credentials: 'include',
       method:'POST',
       headers:{
@@ -75,12 +32,12 @@ import {useTheme} from '../Context/ColorMode'
           "message":message.current.value,
       })
 
-  }
+  } 
   )
   .then(res=>res.json())
-  .then(data=>console.log(data.msg))
+  .then(data=>alert(data.msg))  
 }
-  const darkTheme = useTheme()
+  const darkTheme = useTheme() 
   const themeStyle = {
     backgroundColor:darkTheme?'#333 ':'#f6f6f6',
     color:darkTheme?'#f6f6f6':'#333',
@@ -106,19 +63,19 @@ import {useTheme} from '../Context/ColorMode'
           <Form>
         <Form.Label htmlFor="basic-url">For Contact</Form.Label>
       <InputGroup className="mb-3">
-        <Form.Control  aria-label="Name" placeholder="Name"  ref={name}/>
+        <Form.Control  aria-label="Name" placeholder="Name"  ref={name} required/>
       </InputGroup>
       <InputGroup className="mb-3">
-        <Form.Control aria-label="email" placeholder="email address"  ref={email}/>
+        <Form.Control aria-label="email" placeholder="email address"  ref={email} required/>
       </InputGroup>
       <InputGroup className="mb-3">
-        <Form.Control aria-label="Subject" placeholder="Subject"  ref={subject}/>
+        <Form.Control aria-label="Subject" placeholder="Subject"  ref={subject} required/>
       </InputGroup>
       <InputGroup>
-        <Form.Control as="textarea" aria-label="question" placeholder="Ask your Question" ref={message}/>
+        <Form.Control as="textarea" aria-label="question" placeholder="Ask your Question" ref={message} required/>
       </InputGroup >
       <InputGroup className=' mt-2  d-flex align-content-end justify-content-end'>
-        <button type="submit" onSubmit={(e)=>e.preventDefault()}  onClick={sendEmail} className='button mt-2'><span></span><span></span><span></span><span></span>Send</button>
+        <button type="submit"  onClick={sendEmail} className='button mt-2'><span></span><span></span><span></span><span></span>Send</button>
         </InputGroup >
 
       </Form>

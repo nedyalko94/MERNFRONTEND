@@ -15,7 +15,7 @@ const Email = useRef('')
                 "Content-Type":"application/json"
             },
             body:JSON.stringify({ 
-                "Email":Email.current.value,
+                "Email":Email.current.value, 
             })
         })
         .then(res=> res.json())

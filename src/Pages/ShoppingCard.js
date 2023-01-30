@@ -51,14 +51,13 @@ export default function ShoppingCard() {
 
 useEffect(()=>{
   const getShopList =()=>{
-    const Shop=JSON.parse(localStorage.getItem("shoppingCard")
-    )
+    const Shop=JSON.parse(localStorage.getItem("shoppingCard"))
     if(Shop.length === ShopList.length){return}else{setShopList(Shop)}
   }
   
   getShopList()
   
-},[Shopping])
+},[Shopping,ShopList.length]) 
 
  
 
@@ -81,12 +80,21 @@ DefaultShoppingList()
      // calculate total
      
      useEffect(()=>{
-      const TotalPrice = ()=>{
+      const TotalPrice = ()=>{ 
         const total= []
 
         ShopListWithQuantity.forEach(ele=>{
+         
+          if( ele[1].PromoPrice ===null)
+          {
           let Single= ele[0]*ele[1].Price
           return total.push(Single)
+        }else{
+          let Single= ele[0]*ele[1].PromoPrice
+          return total.push(Single)
+
+        }
+
         })
         const sum = total.reduce((accumulator, value) => {
           return accumulator + value;

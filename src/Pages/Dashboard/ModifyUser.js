@@ -14,6 +14,7 @@ import DashboardMenu from "./DashboardMenu";
 import server from "../../variable";
 
 export default function ModifyUser({AdminGetAllUser, setAdminSortUserBy, setAdminInputSearchUser }) {
+  const [AllUsers,setAllUsers] = useState(AdminGetAllUser)
   const [UserIdState,setUserId]= useState('')
   const UserId = (e)=> { return setUserId(e.target.id)}
 
@@ -35,6 +36,7 @@ export default function ModifyUser({AdminGetAllUser, setAdminSortUserBy, setAdmi
 
  const [Admin,setAdmin]= useState(false)
  const [Confirm,setConfirm]= useState(false)
+
  const checkAdmin = ()=>{ setAdmin(!Admin)}
  const checkConfirm = ()=>{setConfirm(!Confirm)}
 
@@ -64,7 +66,7 @@ export default function ModifyUser({AdminGetAllUser, setAdminSortUserBy, setAdmi
 })
 .then(res=>res.json())
 .then(data=>{
-     alert(data.msg)
+  setAllUsers(data.AllUsers)
     //  setErrorMSG(data.msg)
 }) 
 }
@@ -108,19 +110,24 @@ export default function ModifyUser({AdminGetAllUser, setAdminSortUserBy, setAdmi
   // search  by categories
   const FormSelect= (e)=>{ setAdminSortUserBy (e.target.value)}
   const getInputText = (e)=>{setAdminInputSearchUser (e.target.value)}
-  const DeleteAll = async ()=>{
+  const DeleteAll = async (e)=>{
+    e.preventDefault()
+
     let res = await fetch(`${server}/Users/DeleteAll`, {
         method: 'DELETE'
 })
     let data = await res.json();
-    console.log(data)
+    setAllUsers(data.AllUsers)
    } 
+
    const getDelete = async (e)=>{
+    e.preventDefault()
+
     let res = await fetch(`${server}/Users/Delete/${e.target.id}`, {
         method: 'DELETE'
 })
     let data = await res.json();
-    alert(data.msg)
+    setAllUsers(data.AllUsers)
 } 
 
  
@@ -181,7 +188,7 @@ export default function ModifyUser({AdminGetAllUser, setAdminSortUserBy, setAdmi
           </thead>
           <tbody>
             {/* {console.log(AllProduct)} */}
-            {AdminGetAllUser.map((e, index) => {
+            {AllUsers.map((e, index) => {
               return (
                 <tr key={index}>
                   <td className="text-center" >{e._id}</td>
@@ -197,10 +204,11 @@ export default function ModifyUser({AdminGetAllUser, setAdminSortUserBy, setAdmi
                   <td className="text-center">{e.NumberOfStreet}</td>
                   <td >
                     <Button className="bg-danger" onClick={getDelete} id={e._id} >Delete</Button>
-                    <OverlayTrigger
+                    <OverlayTrigger 
                       trigger="click"
-                      placement="bottom"
+                      placement="bottom" 
                       overlay={popover}
+                      rootClose
                     >
                       <Button variant="success" className="mx-2" onClick={UserId} id ={e._id}>Edit</Button>
                     </OverlayTrigger>

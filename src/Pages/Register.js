@@ -6,8 +6,9 @@ import server from "../variable";
 
 export default function Register() {
   const [ErrorMSG, setErrorMSG] = useState(undefined)
+  const messageRef = useRef(null)
 
-  const getFormData = useRef()
+  // const getFormData = useRef()
   const UserName = useRef('')
   const Email = useRef('')
   const Password = useRef('')
@@ -15,18 +16,21 @@ export default function Register() {
 
   const FirstName = useRef('')
   const LastName = useRef('')
-  const [Gender, setGender] = useState('')
+  // const [Gender, setGender] = useState('')
 
   const Country = useRef('')
   const City = useRef('')
   const PostCode = useRef('')
   const Street = useRef('')
   const NumberOfStreet = useRef('')
-  const genderRadio = (e) => {
-    setGender(e.target.value)
-  }
+  // const genderRadio = (e) => {
+  //   setGender(e.target.value)
+  // }
+  const Gender = useRef('')
+
 
   const AddNewUser = (e) => {
+      e.preventDefault() 
     fetch(`${server}/Users/register`, {
       method: 'POST',
       headers: {
@@ -39,19 +43,20 @@ export default function Register() {
         "Password2": Password2.current.value,
         "FirstName": FirstName.current.value,
         "LastName": LastName.current.value,
-        "Gender": Gender,
+        "Gender": Gender.current.value,
         "Country": Country.current.value,
         "City": City.current.value,
-        "PostCode": PostCode.current.value,
+        "PostCode": PostCode.current.value, 
         "Street": Street.current.value,
         "NumberOfStreet": NumberOfStreet.current.value
       })
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data.msg)
+        setShow(true)
         setErrorMSG(data.msg)
       })
+      .then((e)=>   messageRef.current?.scrollIntoView({behavior: 'smooth'}))
   }
 
   // pop up msg 
@@ -64,15 +69,15 @@ export default function Register() {
     <Container className='mainContainer ' fluid >
       <Row className="d-flex justify-content-center">
         <Col xs={12} sm={6} md={6} lg={6} xl={4} xxl={4} className=' bg-success rounded-4 mt-5 p-5 mb-4' >
-
-          <>
+          <div ref={messageRef} ></div>
+          < >
 
 
             {ErrorMSG !== undefined ?
               ErrorMSG[0].msg !== undefined ?
                 (
-                  show ? <Alert variant="danger" onClose={() => setShow(false)} dismissible>
-                    {ErrorMSG.map((e) => (<Alert.Heading>{e.msg}</Alert.Heading>
+                  show ? <Alert  variant="danger" onClose={() => setShow(false)} dismissible>
+                    {ErrorMSG.map((e,index) => (<Alert.Heading key={index}>{e.msg}</Alert.Heading>
                     ))}
                     <div className="d-flex justify-content-end">
 
@@ -81,8 +86,8 @@ export default function Register() {
 
 
                 ) : (
-                  show ? <Alert variant="success" onClose={() => setShow(false)} dismissible>
-                    {ErrorMSG.map((e) => (<Alert.Heading>{e.message}</Alert.Heading>
+                  show ? <Alert  variant="success" onClose={() => setShow(false)} dismissible>
+                    {ErrorMSG.map((e,index) => (<Alert.Heading key={index}>{e.message}</Alert.Heading>
                     ))}
                     <Alert.Heading>{ErrorMSG.message}</Alert.Heading>
 
@@ -98,9 +103,9 @@ export default function Register() {
               : null
             }
           </>
-          <Form
-            // onSubmit={(e)=> } 
-            name={"user"} ref={getFormData}>
+          <Form>
+            {/* // onSubmit={(e)=> }  */}
+            {/* name={"user"} ref={getFormData} */}
 
             <Form.Label aria-label="Name" >Username</Form.Label>
 
@@ -125,6 +130,7 @@ export default function Register() {
                 aria-describedby="basic-addon2"
                 required
                 name="Email"
+                type="email"
                 ref={Email}
               />
             </InputGroup>
@@ -139,7 +145,7 @@ export default function Register() {
                 required
                 name="Password"
                 ref={Password}
-                autoComplete='"new-password"'
+                autoComplete="new-password"
 
 
               />
@@ -155,7 +161,7 @@ export default function Register() {
                 required
                 name="Password2"
                 ref={Password2}
-                autoComplete='"new-password"'
+                autoComplete="new-password"
 
 
               />
@@ -195,24 +201,30 @@ export default function Register() {
             </InputGroup>
 
             <Form.Label aria-label="Name" >Gender</Form.Label>
-            <InputGroup className="mb-3 bg-light rounded-1 py-2" onChange={genderRadio}>
-              {/* <InputGroup.Text label="men" name='Gender' defaultChecked value='men'>Men</InputGroup.Text>
-              <InputGroup.Radio label="men" name='Gender' value='men' />
-
-              <InputGroup.Text aria-label="woman" value='woman' >Woman</InputGroup.Text>
-              <InputGroup.Radio aria-label="woman" value='woman' name='Gender' /> */}
+            {/* <InputGroup className="mb-3 bg-light rounded-1 py-2" onChange={genderRadio} required>
+              
               <label for='men' className=" mx-3 fs-5" >Men</label>
-              <input type="radio" name='Gender' value='men' id="men" className="fs-5"></input>
+              <input type="radio" name='Gender' value='men' id="men" className="fs-5" ></input>
 
               <label for='woman' name='Gender' value='woman' className=" mx-3 fs-5">Woman</label>
               <input type="radio" name='Gender' value='woman' id="woman" className=" mx-3 " ></input>
 
-            </InputGroup >
+            </InputGroup > */}
 
 
 
+<InputGroup className="mb-3">
+              <Form.Control
+                placeholder="Gender"
+                aria-label="Gender"
+                aria-describedby="basic-addon1"
+                required
+                name="Gender"
+                ref={Gender}
 
 
+              />
+</InputGroup>
 
             <Form.Label aria-label="Name" >Country</Form.Label>
 
@@ -285,12 +297,13 @@ export default function Register() {
             </InputGroup>
 
             <button type="submit" onClick={AddNewUser} className='button'><span></span><span></span><span></span><span></span>Register</button>
+            {/* type="submit" */}
           </Form>
         </Col>
       </Row>
 
     </Container>
-  );
+  ); 
 }
 
 

@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState} from "react";
 import { Popover, Button, Col, Container, Row,Table, OverlayTrigger, Form,InputGroup,} from "react-bootstrap";
 import DashboardMenu from "./DashboardMenu";
 import server from "../../variable";
+import {storage} from '../../firebase'
+import {ref,uploadBytes,getDownloadURL} from 'firebase/storage'
+// import {deleteObjectfromStorage} from '../../firebase'
 
 export default function ModifyProduct({ AdminGetAllProduct,setAdminCategoriesQueryProduct,setAdminInputSearchProduct }) {
 
@@ -10,6 +13,60 @@ export default function ModifyProduct({ AdminGetAllProduct,setAdminCategoriesQue
   const SearchInput = (e)=>{setAdminInputSearchProduct(e.target.value)}
   const FormSelect= (e)=>{ setAdminCategoriesQueryProduct(e.target.value)}
   const getEditId = (e)=> setEditId(e.target.id)
+  const [Image,setImage] = useState(null)
+  const [Product,setProduct] = useState(AdminGetAllProduct)
+
+  // const [Url, setUrl] = useState(null)
+  // const formRef = useRef({})
+  // const formData = new FormData(formRef.current)
+
+
+  const [ImagesArray,setImagesArray]= useState([])
+  const Name =useRef()
+  const Brand=useRef()
+  const CountOfStock=useRef()
+  const Categories=useRef()
+  const Description=useRef()
+  const Price=useRef()
+  const PromoPrice = useRef()
+  const Rating=useRef()
+  const NumberOfVote=useRef()
+
+
+  const handleImageChange = async(e)=>{
+    // console.log(e.target.files)
+    if (e.target.files[0]){
+      setImage(e.target.files[0])
+    }
+  }
+
+  const handleSubmit=()=>{
+
+
+    // const storageRef = ref(storage, 'some-child');
+    // // no time to waste with this type of array 
+    // const bytes = new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21]);
+    // uploadBytes(storageRef, bytes).then((snapshot) => {
+    //   console.log('Uploaded an array!');
+    // });
+
+    const imageRef = ref(storage, "aAa"+Image.lastModifiedDate) 
+    
+      uploadBytes(imageRef,Image).then((e)=>{ 
+        // console.log(e)
+        getDownloadURL(imageRef).then((url)=>{ 
+          setImagesArray([...ImagesArray,url])
+          // setUrl(url)
+
+        })
+        .catch((err)=>{console.log(err,"error message getDownloadURL")})
+        setImage(null)
+      })
+      .catch((err)=>{console.log(err,"error message   uploadBytes ")})
+
+    
+
+  }
 
 
   useEffect(()=>{
@@ -17,32 +74,60 @@ export default function ModifyProduct({ AdminGetAllProduct,setAdminCategoriesQue
   },[])
   
     const getDelete = async (e)=>{
+      e.preventDefault()
+
+      // let imageForDeletion = AdminGetAllProduct.filter(e=>e===e.target.id)
+      // const imageRef = ref(storage,imageForDeletion[0].Picture ) 
+      // deleteObjectfromStorage(imageRef).then(()=>{
+      //   console.log('file deleted')
+      // }).catch((err)=>{
+      //   console.log('err with file deletion')
+      // })
+      // aAaWed%20Dec%2028%202022%2010%3A43%3A12%20GMT%2B0100%20(Централноевропейско%20стандартно%20време)
+
         let res = await fetch(`${server}/Product/DeleteProduct/${e.target.id}`, {
             method: 'DELETE'
     })
         let data = await res.json();
-        alert(data.msg)
+        setProduct(data.data)
     } 
-    const DeleteAll = async ()=>{
+    const DeleteAll = async (e)=>{
+      e.preventDefault()
+
       let res = await fetch(`${server}/Product/DeleteAll`, {
           method: 'DELETE'
   })
       let data = await res.json();
-      alert(data.msg)
+      setProduct(data.data)
      } 
-
-     const Edit = async(e) => {
-      e.preventDefault()
+ 
+     const EditProduct = async(e) => {
+      // e.preventDefault()
     
-  
-      const formData = new FormData(formRef.current)
+      
       
        await fetch(`${server}/Product/UpdateProduct/${editId}`,{
         method:'PUT',
-        body:formData,
+        // body:formData,
+        headers:{
+          "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        "Name": Name.current.value,
+        "Brand": Brand.current.value,
+        "CountOfStock": CountOfStock.current.value,
+        "Categories": Categories.current.value,
+        "Description": Description.current.value, 
+        "Price": Price.current.value, 
+        "PromoPrice": PromoPrice.current.value, 
+        "Rating":  Rating.current.value,
+        "NumberOfVote": NumberOfVote.current.value,
+        "Picture":ImagesArray
+      })
       })
       .then(res=>res.json())
-      .then(data=>alert(data.msg))
+      .then(data=>setProduct(data.data))
+      // .then(data=>setProduct(data.data))
 
 
         .catch((err)=>{
@@ -56,16 +141,24 @@ export default function ModifyProduct({ AdminGetAllProduct,setAdminCategoriesQue
           <Container>
           <Row>      
           <form encType={'multipart/form-data'}  ref={formRef}>
-          <input placeholder="Name" name="Name" className="mb-1 rounded-1"  required></input>
-          <input placeholder="Brand" name="Brand" className="mb-1 rounded-1"required ></input>
-          <input placeholder="CountOfStock" name="CountOfStock" className="mb-1 rounded-1"required ></input>
-          <input placeholder="Categories" name="Categories" className="mb-1 rounded-1"required></input>
-          <input placeholder="Description" name="Description" className="mb-1 rounded-1"required></input>
-          <input placeholder="Price" name="Price" className="mb-1 rounded-1"required></input>
-          <input placeholder="Rating" name="Rating" className="mb-1 rounded-1"required></input>
-          <input placeholder="NumberOfVote" name="NumberOfVote" className="mb-1 rounded-1"required></input>
-          <input placeholder="Picture	" name="Picture" className="mb-1 rounded-1"required type='file'multiple></input>
-          <Button onClick={Edit} type='submit' >Update</Button>
+          <div className="m-1">Wait to be Upload </div>
+          <div className="m-1">link will be display Here</div>
+         {ImagesArray.length!==0? ImagesArray.map((e,index)=>
+          (<div><a href={e} className="m-3" key={index}>link {index}</a></div>))
+        :<div>no link for now</div>}
+          <input placeholder="Name" name="Name" className="mb-1 rounded-1"  required ref={Name}></input>
+          <input placeholder="Brand" name="Brand" className="mb-1 rounded-1"required ref={Brand}></input>
+          <input placeholder="CountOfStock" name="CountOfStock" className="mb-1 rounded-1"required ref={CountOfStock} type='number'></input>
+          <input placeholder="Categories" name="Categories" className="mb-1 rounded-1"required ref={Categories}></input>
+          <textarea placeholder="Description"  name="Description" className="mb-1 rounded-1"required ref={Description}/>
+          <input placeholder="Price" name="Price" className="mb-1 rounded-1"required ref={Price}></input>
+          <input placeholder="PromoPrice" name="PromoPrice" className="mb-1 rounded-1"required ref={PromoPrice}></input>
+          <input placeholder="Rating" name="Rating" className="mb-1 rounded-1"required ref={Rating}></input>
+          <input placeholder="NumberOfVote" name="NumberOfVote" className="mb-1 rounded-1"required ref={NumberOfVote}></input>
+          <input placeholder="Picture	" name="Picture" className="mb-1 rounded-1"required onChange={handleImageChange} type='file'></input>
+          {/* multiple */}
+          <Button onClick={handleSubmit}  className='m-3'>Upload Single Image</Button>
+          <Button onClick={EditProduct} className='m-3'  >Update</Button>
           </form> 
           </Row>
           </Container>
@@ -127,7 +220,7 @@ export default function ModifyProduct({ AdminGetAllProduct,setAdminCategoriesQue
           </thead>
           <tbody>
             {/* {console.log(AllProduct)} */}
-            {AdminGetAllProduct.map((e, index) => {
+            {Product.map((e, index) => {
               return (
                 <tr key={index}>
                   <td className="text-center">{e._id}</td>

@@ -36,12 +36,12 @@ export default function MyVerticallyCenteredModal(props) {
  useEffect(()=>{
  
    const TotalPrice = ()=>{
-     const total = Product.Price * Quantity
+     const total = Product.PromoPrice === null ? Product.Price * Quantity :Product.PromoPrice * Quantity
      setGetTotalPrice(total)
    }
    TotalPrice()
  
- },[Quantity,Product.Price])
+ },[Quantity,Product.Price,Product.PromoPrice])
    
    return (
      <Modal
@@ -56,7 +56,7 @@ export default function MyVerticallyCenteredModal(props) {
          </Modal.Title>
        </Modal.Header>
        <Modal.Body>
-         <h4>{Product.Brand} {Product.Categories} {Product.Name}  Price: {Product.Price}€</h4>
+         <h4>{Product.Brand} {Product.Categories} {Product.Name}  Price: {Product.PromoPrice === null ? Product.Price : Product.PromoPrice }€</h4>
          <div>
            <div>Quantity</div>
          <Form.Select onChange={FormSelect}  className='mb-3'>

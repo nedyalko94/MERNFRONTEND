@@ -27,7 +27,7 @@ export default function ProductCard({ Product }) {
   const [AlreadyVote, setAlreadyVote] = useState(false)
 
   const SubmitVote = (e) => {
-    // e.preventDefault()
+    e.preventDefault()
     fetch(`${server}/Product/vote`, {
 
       method: 'POST',
@@ -41,8 +41,8 @@ export default function ProductCard({ Product }) {
       })
     })
       .then(res => res.json())
-      // .then(data => console.log(data))
-      // i got msg from back end but is onClick ...
+    // .then(data => console.log(data))
+    // i got msg from back end but is onClick ...
 
   }
 
@@ -75,8 +75,9 @@ export default function ProductCard({ Product }) {
     }
 
 
- 
-  }, []) 
+
+  }, [Product, user, value])
+  //Product, user, value
 
 
 
@@ -97,7 +98,6 @@ export default function ProductCard({ Product }) {
           setAlreadyInCard(true)
 
         }
-        // return
       }
       else {
         setAlreadyInCard(true)
@@ -123,7 +123,7 @@ export default function ProductCard({ Product }) {
     }
     checkForWishlist()
   }, [Product._id])
- 
+
   useEffect(() => {
     const checkForCard = () => {
       if (!localStorage.getItem("shoppingCard")) {
@@ -169,38 +169,63 @@ export default function ProductCard({ Product }) {
       localStorage.setItem('Wishlist', JSON.stringify(shoppingStorage))
       //  console.log(shoppingStorage)
     }
+  }
+  const SendData = async () => {
+    fetch(`${server}/Product/visit`, {
 
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "product": Product,
+        "product_id": Product._id,
+        "visits": 1,
+
+      })
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
 
   }
 
   return (
-    <Card key={Product._id} className="m-3 z-index-1 text-dark" style={{ minHeight: "40vh" }}>
-      <Link to={`/${Product._id}`}>
-        <Card.Img variant="top" style={{ height: "20vh" }} src={`${server}/${Product.Picture[0]}`} alt="no image" />
+
+    <Card key={Product._id} className="m-3 z-index-1 text-dark" style={{ minHeight: "40vh" }}> 
+      <Link to={`/${Product._id}`} onClick={SendData}>
+        <Card.Img variant="top" style={{ height: "20vh",padding:"15px",objectFit:"contain" }} src={`${Product.Picture[0]}`} alt="no image" />
+        {/* src={`${server}/${Product.Picture[0]}`} */}
       </Link>
-      <Card.Body >
-        <Card.Title style={{ minHeight: "6vh" }}>{Product.Brand} {Product.Categories} {Product.Name}</Card.Title>
+      <Card.Body className="d-flex flex-column justify-content-between">
+        <Card.Title className="CardTittle" >{Product.Brand} {Product.Categories} {Product.Name}</Card.Title>
+        <div className="d-flex flex-column justify-content-end"> 
         <Card.Subtitle className="mb-2 text-muted ">
           {user === undefined ? <Rating name="simple-controlled" className="text-warning" value={Product.Rating} size="large" readOnly />
             : AlreadyVote ? <Rating name="simple-controlled" value={Product.Rating} onChangeActive={(event, newValue) => {
               setValue(newValue);
-            }} precision={0.5} size="large" onClick={SubmitVote} /> : <Rating name="simple-controlled" className="text-danger" value={Product.Rating} size="large" readOnly />
+            }} precision={0.5} size="large" onClick={SubmitVote} />
+              : <Rating name="read-only" precision={0.1} className="text-danger" value={Product.Rating} size="large" readOnly />
 
           }
           <span>{Product.Rating.toFixed(1)}</span>
           <span>({Product.NumberOfVote})</span>
         </Card.Subtitle>
-        <Card.Text>
-          {/* {Product.Description} */}
-        </Card.Text>
-        <Card.Subtitle className="mb-2 " >Price: {Product.Price} €</Card.Subtitle>
+
+        {Product.PromoPrice === null ?
+          <Card.Text className="d-flex"> <Card.Subtitle className="mb-2 " >Price: {Product.Price} €</Card.Subtitle></Card.Text>
+          : <Card.Text className="d-flex">
+            <Card.Subtitle className="mb-2 text-danger text-decoration-line-through" >Price: {Product.Price} €</Card.Subtitle>
+            <Card.Subtitle className="mb-2  px-3" >{Product.PromoPrice} €</Card.Subtitle>
+          </Card.Text>}
+
+
+
 
         <Row className="p-1">
           <Col >
 
 
-            <div     >
-              {/* onClick={shoppingNow} */}
+            <div>
 
               <IoMdCard className="text-dark fs-2 " onClick={() => setModalShow(true)} />
 
@@ -237,12 +262,14 @@ export default function ProductCard({ Product }) {
               {AlreadyInCard === false ? Icon1 ? (
                 <GiShoppingCart className="text-dark fs-2 shoppingCard" />
               ) : (
-                <MdOutlineAddShoppingCart className="text-dark fs-2 shoppingCard" />
-              ) : <MdOutlineAddShoppingCart className="text-dark fs-2 shoppingCard text-danger" />
+                <MdOutlineAddShoppingCart className="text-primary fs-2 shoppingCard" />
+              ) : <MdOutlineAddShoppingCart className="text-primary fs-2 shoppingCard " />
               }
             </div>
           </Col>
         </Row>
+        </div> 
+
       </Card.Body>
     </Card>
 

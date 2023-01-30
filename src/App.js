@@ -109,7 +109,9 @@ getUser()
 
 
 
-  const login = async()=>{
+  const login = async(e)=>{
+    e.preventDefault()
+
     await fetch(`${server}/Users/login`, {
        credentials: 'include',
        method:'POST',

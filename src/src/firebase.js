@@ -19,8 +19,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 
-
-export const storage  = getStorage(app)
+const storage  = getStorage(app)
+module.exports = storage 
 // export const deleteObjectfromStorage = deleteObject(app)
 
 

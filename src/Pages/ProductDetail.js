@@ -441,8 +441,8 @@ export default function ProductDetail() {
                 </div>
                 <div key={comment._id} className="mx-3 fs-5">{comment.comment} </div>
 
-                <div className='mx-1 my-2 d-flex justify-content-between'key={index}>
-                  <div>
+                <div className=' d-flex justify-content-between'key={index}>
+                  <div className='px-1 py-2'>
                     {/* reply button */}
                     <button className='border border-0 commentButton mx-3 py-2 fs-5' style={commentButtonStyle} onClick={Reply} id={index}>Reply</button>
                     {/* response button */}

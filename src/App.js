@@ -101,7 +101,7 @@ useEffect(()=>{
 }
 
 getUser()
-},[])
+},[user])
 
 
 

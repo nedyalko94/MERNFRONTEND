@@ -57,12 +57,13 @@ useEffect(()=>{
   
   getShopList()
   
-},[Shopping,ShopList.length]) 
+},[Shopping,ShopList]) 
 
  
 
 useEffect(()=>{
  let DefaultShoppingList=()=>{
+  if (ShopList === null){return}
   let variable = []
    ShopList.forEach(element =>  variable.push([1, element]))
   // console.log(ShopListWithQuantity)

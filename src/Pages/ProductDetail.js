@@ -317,12 +317,12 @@ export default function ProductDetail() {
             </Col>
           </Row>
         </Col>
-        <Col md={4} className='d-flex flex-column justify-content-start align-items-end mx-5 '>
+        <Col md={4} className='d-flex flex-column justify-content-start align-items-end px-5 '>
 
 
 
           <h3> {ProductId.Categories} {ProductId.Brand} {ProductId.Name}</h3>
-          <div className='mt-4 fs-5'>
+          <div className='pt-4 fs-5'>
             {ProductId.Description}
           </div>
 

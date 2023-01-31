@@ -25,18 +25,18 @@ import {useTheme,useThemeUpdate} from '../Context/ColorMode'
   toggleTheme()
   }
   
-  const popover = (
+  const LoginPopOver = (
   <Popover id="popover-basic"  className='rounded-3'>
       <Popover.Header as="h3" className='secondary' > Login</Popover.Header>
       <Popover.Body>
         <Container fluid>
         <Row md={12}>    
         <form >
-        <input placeholder="UserName" name="UserName" className="mt-2 rounded-2" ref={username} required></input>
-        <input placeholder="password" name="password" className="mt-2 rounded-2"required ref={password} type="password"></input>
+        <input placeholder="UserName" name="UserName" className="mt-2 rounded-2" ref={username} required autoComplete='username'></input>
+        <input placeholder="password" name="password" className="mt-2 rounded-2"required ref={password} type="password"  autoComplete='current-password' ></input>
           <Row><Link to="/Register" className='mt-2'> You don't have Account yet ?</Link></Row>
           <Row><Link to="/ForgotPassword" className='mt-1 '> Forgot your Password ?</Link></Row>
-        <button onClick={login} type='submit' className='mt-3 px-3 py-2 button'><span></span><span></span><span></span><span></span>Login</button>
+        <button onClick={login}  className='mt-3 px-3 py-2 button'><span></span><span></span><span></span><span></span>Login</button>
         </form> 
         </Row>
         </Container>
@@ -66,17 +66,19 @@ import {useTheme,useThemeUpdate} from '../Context/ColorMode'
  
   return (
 <Container fluid  style={themeStyle} >
-  <Row className='p-0 m-0'>
+  <Row className='pb-3 m-0'>
     <Col>
      
-        <Link to='/' className="d-flex nav-link text-decoration-none mx-2 mt-4 justify-content-center" sm={4} md={1} xl={2} xxl={2} onClick={getHome}><h2 className='button rounded-2'><span></span><span></span><span></span><span></span>CyberTech</h2></Link>
+        <Link to='/' className="d-flex nav-link text-decoration-none mx-2 mt-4 justify-content-center"
+         sm={4} md={1} xl={2} xxl={2} onClick={getHome}>
+          <h2 className='button rounded-2'><span></span><span></span><span></span><span></span>CyberTech</h2></Link>
         </Col>
         <Col md={12} sm={12} lg={12} xl={12} xxl={6}>
             <Form className="mx-2 my-2 mt-5 ">
             <Form.Control
               type="search"
               placeholder="Search"
-              aria-label="Search"
+              aria-label="Search" 
               onKeyDown={RedirectToHome}
               onChange={inputHandler}
             />
@@ -116,7 +118,7 @@ import {useTheme,useThemeUpdate} from '../Context/ColorMode'
             <OverlayTrigger
            trigger="click"
            placement="bottom"
-           overlay={popover}
+           overlay={LoginPopOver}
            rootClose >
         <h5 >Login </h5>
         </OverlayTrigger>
@@ -140,23 +142,23 @@ import {useTheme,useThemeUpdate} from '../Context/ColorMode'
 
      
     </Row>
-  <Row>
-   <Navbar collapseOnSelect={true}  variant={NavBarVariant}   expand="md"   >
-      <Container fluid>
+  <Row className='pb-2'>
+   <Navbar collapseOnSelect={true}  variant={NavBarVariant}   expand="lg"   >
+      <Container fluid  className='d-flex justify-content-end'>
         {/* <Navbar.Brand ><Link to='/' className="nav-link text-decoration-none mx-2">ICTsiktir</Link></Navbar.Brand> */}
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Toggle aria-controls="responsive-navbar-nav"  />
         <Navbar.Collapse id="responsive-navbar-nav" >
        
          {/* <Nav className="me-auto"> */}
 
            
-            <Nav.Link href="#"> <Link to="/"className=" text-decoration-none mx-2 nav-link mt-2" onClick={getHome}><h5 style={themeStyle} className="navMenuLink">Home</h5></Link></Nav.Link>
-            <Nav.Link href='#'><Link to="/Actions"className="  text-decoration-none mx-2 nav-link mt-2"><h5 style={themeStyle} className="navMenuLink">Actions</h5></Link></Nav.Link>
+            <Nav.Link href="#"> <Link to="/"className=" text-decoration-none mx-4 nav-link mt-2" onClick={getHome}><h5 style={themeStyle} className="navMenuLink">Home</h5></Link></Nav.Link>
+            <Nav.Link href='#'><Link to="/Actions"className="  text-decoration-none mx-4 nav-link mt-2"><h5 style={themeStyle} className="navMenuLink">Actions </h5></Link></Nav.Link>
           
-             
+              
             
               <h5>
-            <NavDropdown title="Categories" id="navbarScrollingDropdown"    className=" text-decoration-none mx-2 navMenuLink mt-2">
+            <NavDropdown title="Categories" id="navbarScrollingDropdown"    className=" text-decoration-none mx-3 navMenuLink mt-2">
               {categories !== undefined ? 
             categories.map(( categories,index) =>
               (  <NavDropdown.Item key={index} value={categories} onClick={categoriesFilter}    className="  text-decoration-none navMenuLink dropDownLink">
@@ -170,9 +172,9 @@ import {useTheme,useThemeUpdate} from '../Context/ColorMode'
             </NavDropdown>
             </h5>
             
-            <Nav.Link href='#'><Link to="/Trending"className="  text-decoration-none mx-2 mt-2 nav-link" ><h5 className='navMenuLink'  style={themeStyle}>Trending</h5></Link></Nav.Link>
+            <Nav.Link href='#'><Link to="/Trending"className="  text-decoration-none mx-4 mt-2 nav-link" ><h5 className='navMenuLink'  style={themeStyle}>Trending</h5></Link></Nav.Link>
 
-            <Nav.Link href='#'><Link to="/Contact"className="  text-decoration-none mx-2  mt-2 nav-link" ><h5 className='navMenuLink'  style={themeStyle}>Contact</h5></Link></Nav.Link>
+            <Nav.Link href='#'><Link to="/Contact"className="  text-decoration-none mx-4  mt-2 nav-link" ><h5 className='navMenuLink'  style={themeStyle}>Contact</h5></Link></Nav.Link>
             
       
         

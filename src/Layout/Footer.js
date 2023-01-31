@@ -1,4 +1,4 @@
-import React, { useRef} from "react";
+import React, { useRef,useState} from "react";
 import {
   Col,
   Container,
@@ -9,20 +9,39 @@ import {
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {FaInstagram,FaLinkedin,FaTwitter,FaDiscord,FaTiktok,FaTwitch,FaYoutube} from "react-icons/fa";
+import server from '../variable'
+import ResponseModal from '../Pages/ResponseModal'
 
-function Footer({setEmail,newsLetter}) {
 
-  // const [msg,setMsg]= useState({}) for response from the server after fetch
+function Footer({setEmail,newsLetter,msgModal,setMsgModal}) {
+  const [modalShow, setModalShow] = useState(false);
+
+
   const name = useRef('')
   const email = useRef('')
   const subject = useRef('')
   const message = useRef('')
   const getEmail = (e)=>setEmail(e.target.value)
 
+const getNewsLetterEmail=(e)=>{
+  e.preventDefault()
+  newsLetter()
+   setModalShow(true)
+  
+  return
 
+
+}
   const sendEmail = async(e)=>{
     e.preventDefault()
-     await fetch('http://localhost:3004/sendEmail',{
+    setModalShow(true)
+    if (name.current.value ==='' || email.current.value === '' || subject.current.value === '' || message.current.value === '')
+    { if(name.current.value !== '' || email.current.value !== ''||subject.current.value === '' || message.current.value === '')
+    {name.current.value = '';email.current.value = '';subject.current.value = '' ; message.current.value = ''}
+      return  setMsgModal('fill all field please and try again')  }  
+    // setMsgModal('fill all fill please and try again') &&
+
+     await fetch(`${server}/sendEmail`,{ 
       credentials: 'include',
       method:'POST',
       headers:{
@@ -30,7 +49,7 @@ function Footer({setEmail,newsLetter}) {
       },
       body:JSON.stringify({ 
           "name":name.current.value,
-          "email":email.current.value,
+          "email":email.current.value, 
           "subject":subject.current.value,
           "message":message.current.value,
       })
@@ -38,8 +57,10 @@ function Footer({setEmail,newsLetter}) {
   }
   )
   .then(res=>res.json())
-  .then(data=>alert(data.msg))
+  .then(data=>setMsgModal(data.msg) )
+//   .then(()=>{return Form.reset()}) 
 }
+
 
   return (
     <Container fluid className="bg-dark text-light justify-content-center fs-3">
@@ -56,7 +77,9 @@ function Footer({setEmail,newsLetter}) {
               onChange={getEmail}
               required
               />
-            <button  onClick={newsLetter} className='button mx-2'><span></span><span></span><span></span><span></span>Sign In</button> 
+             {/* <input type="checkbox" className="big-checkbox"></input> */}
+              
+            <button  onClick={getNewsLetterEmail} className='button mx-2' ><span></span><span></span><span></span><span></span>Sign In</button> 
           </InputGroup>
           </Form>
         </Col>
@@ -128,25 +151,32 @@ function Footer({setEmail,newsLetter}) {
           <Form>
         <Form.Label htmlFor="basic-url">Your have a  Question?</Form.Label>
       <InputGroup className="mb-3">
-        <Form.Control  aria-label="Name" placeholder="Name"  ref={name}/>
+        <Form.Control  aria-label="Name" placeholder="Name"  ref={name} required/>
       </InputGroup>
       <InputGroup className="mb-3">
-        <Form.Control aria-label="email" placeholder="email address"  ref={email}/>
+        <Form.Control aria-label="email" placeholder="email address"  ref={email} required/>
       </InputGroup>
       <InputGroup className="mb-3">
-        <Form.Control aria-label="Subject" placeholder="Subject"  ref={subject}/>
+        <Form.Control aria-label="Subject" placeholder="Subject"  ref={subject} required/>
       </InputGroup>
       <InputGroup>
-        <Form.Control as="textarea" aria-label="question" placeholder="Ask your Question" ref={message}/>
+        <Form.Control as="textarea" aria-label="question" placeholder="Ask your Question" ref={message} required/>
       </InputGroup >
       <InputGroup className=' mt-2  d-flex align-content-center justify-content-center'>
-        <button type="submit" onSubmit={(e)=>e.preventDefault()}  onClick={sendEmail} className='button mt-2'><span></span><span></span><span></span><span></span>Send</button>
+        <button     onClick={sendEmail} className='button mt-2'><span></span><span></span><span></span><span></span>Send</button>
         </InputGroup >
 
       </Form>
+     
+      
 
+      <ResponseModal  
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        msg={msgModal}
+      />
+ 
         </Container>
-        
         
         
         </Col>

@@ -95,7 +95,10 @@ useEffect(
 useEffect(()=>{
   const getUser = async() =>{
     await fetch(`${server}/Users/user`,{
-        credentials:'include',})
+        credentials:'include',
+       
+     
+      })
         .then(res=>res.json())
         .then(data=> { if (!data.msg){return setUser(data)}else{return setUser(undefined)}})    
 }

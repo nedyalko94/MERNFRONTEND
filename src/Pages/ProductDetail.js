@@ -164,11 +164,8 @@ export default function ProductDetail() {
   const PostComment = async () => {
     if (Comment.current.value === '') { return }
     await fetch(`${server}/Product/Comments/${id}`, {
-
       method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         "product_id": id,
         "user_id":user._id ,
@@ -178,21 +175,15 @@ export default function ProductDetail() {
       })
     })
       .then(res => res.json())
-      .then(result => {
+      // .then(result => {
 
-        let comment = result.comment
-        let reverseComment = comment.reverse()
-        // let rotatedComment = []
-        // for (let i = comment.length - 1; i >= 0; i--) {
-        //   rotatedComment.push(comment[i])
-        //   //    console.log(arr)
-
-        // }
-        return setGetComments(reverseComment)
-      }
+      //   let comment = result.comment
+      //   let reverseComment = comment.reverse()
+      //   return setGetComments(reverseComment)
+      // }
 
 
-      )
+      // )
   }
 
   const ReplyComment = async (e) => {
@@ -222,24 +213,15 @@ export default function ProductDetail() {
 
   useEffect(() => {
     const getComment = async () => {
-      let res = await fetch(`${server}/Product/getComments/${id}`, {
+      const res = await fetch(`${server}/Product/getComments/${id}`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
         }
       })
-      let data = await res.json()
-      //  console.log(data.comment.length)
+      const data = await res.json()
       let comment = data.comment
       let reverseComment = comment.reverse()
-      // let rotatedComment = []
-      // for (let i = comment.length - 1; i >= 0; i--) {
-      //   rotatedComment.push(comment[i])
-      //    console.log(arr)
-
-      // }
-      // console.log(rotatedComment)
-
       data.comment.length === 0 ? setGetComments(undefined) : setGetComments(reverseComment)
 
 

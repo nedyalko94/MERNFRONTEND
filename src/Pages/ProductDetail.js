@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState ,useId} from 'react'
 import { Col, Container, Row, Form, Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import server from '../variable'
@@ -24,6 +24,7 @@ export default function ProductDetail() {
   const [ReplyState, setReplyState] = useState([])
   const ResponseComment = useRef()
   const [SeeResponses, setSeeResponses] = useState(false)
+  const myKey = useId()
 
 
 

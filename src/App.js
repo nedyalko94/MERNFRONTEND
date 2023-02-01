@@ -8,11 +8,9 @@ import Register from './Pages/Register'
 import ForgotPassword from './Pages/ForgotPassword'
 import Wishlist from './Pages/Wishlist'
 import ShoppingCard from './Pages/ShoppingCard'
-// import Login from './Pages/Login'
 import Trending from './Pages/Trending'
 import Detail from './Pages/ProductDetail'
 import Profile from './Pages/Profile'
-// import { io } from "socket.io-client";
 import Dashboard from './Pages/Dashboard/Dashboard'
 import CreateProduct from './Pages/Dashboard/CreateProduct'
 import ModifyProduct from './Pages/Dashboard/ModifyProduct'
@@ -26,7 +24,6 @@ import server from './variable'
 
 import PrivateRoutes from './Context/PrivateRoutes'
 
-// import UserContexts from './userContext'
 import { ThemeProvider } from './Context/ColorMode'
 import History from './Pages/History'
 
@@ -47,11 +44,7 @@ function App() {
   const[ProductInputSearch,setProductInputSearch]= useState(undefined)
   const [msgModal,setMsgModal] = useState("")
 
-//========================Socket==========================
-// useEffect(()=>{
-//   const socket = io(`${server}`)
-//   console.log(socket)
-// },[])
+
 
 //============================ context==========
 

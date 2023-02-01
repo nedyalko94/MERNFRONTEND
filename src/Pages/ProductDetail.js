@@ -408,114 +408,115 @@ export default function ProductDetail() {
       {/*----------------------- Comments---------------------------------- */}
       <Container fluid >
 
-        {user !== undefined ?
-          <Row className='mt-5'>
-            <Form>
-              <Row>
-            <Col xs={12} sm={12} md={12} lg={4} xl={4} xxl={4}>
-            {/* mx-1 border border-5 rounded-5 px-3 py-1 fs-1 */}
-              <h4 className='CommentHeaderContainer'><span className='CommentFirstLetter '>{user.username[0].toUpperCase()}</span>{user.username}</h4>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                <Form.Control as="textarea" placeholder='comment' rows={2} ref={Comment} required={true} />
-              </Form.Group>
+{user !== undefined ?
+  <Row className='mt-5'>
+    <Form>
+      <Row>
+    <Col xs={12} sm={12} md={12} lg={4} xl={4} xxl={4}>
+    {/* mx-1 border border-5 rounded-5 px-3 py-1 fs-1 */}
+      <h4 className='CommentHeaderContainer'><span className='CommentFirstLetter '>{user.username[0].toUpperCase()}</span>{user.username}</h4>
+      <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+        <Form.Control as="textarea" placeholder='comment' rows={2} ref={Comment} required={true} />
+      </Form.Group>
 
-            </Col>
-            <Col xs={12} sm={12} md={12} lg={2} xl={2} xxl={2} className='d-flex d-flex-column justify-content-start align-items-end mb-4'>
-              <button type='submit' className='CommentButton' onClick={PostComment}  >POST</button>
-              
-            </Col>
-            </Row> 
-            </Form>
-          </Row> : ''}
-
-
-
-        {/* map comment && check if they are child */}
-        {GetComments !== undefined ? GetComments.map((comment, index) => comment.child_of !== null ? '' :
-          (<div>
-            <Row key={comment._id} className='pb-1'>
-              <Col xs={12} sm={12} md={12} lg={6} xl={6} xxl={6} className='pb-2  border border-4 rounded-2 mb-2' key={comment._id}>
-                <div className='d-flex justify-content-between ' key={index +"container"}>
-                  <h4 className='pt-3 pb-3 px-3 my-3' key={comment._id}><span className='CommentFirstLetter '>{comment.username[0].toUpperCase()}</span>{comment.username}</h4>
-                  {comment.verifiedBuyer === true ? <span key={comment._id}>Verified Buyer</span> : ''}
-                </div>
-                <div key={comment._id} className="mx-3 fs-5">{comment.comment} </div>
-
-                <div className=' d-flex justify-content-between'key={index}>
-                  <div className='px-1 py-2'>
-                    {/* reply button */}
-                    <button className='border border-0 commentButton mx-3 py-2 fs-5' style={commentButtonStyle} onClick={Reply} id={index}>Reply</button>
-                    {/* response button */}
-                    {GetComments.map(e => e.child_of).includes(comment._id) ?
-                      <button className='border border-0 commentButton mx-3 py-2 fs-5' style={commentButtonStyle} onClick={CommentResponses} id={index}>
-
-                        {GetComments.filter(e => e.child_of === comment._id).length} response </button> : ''}
-                  </div>
-                  <span>{comment.Last_Update !== null ?
-                    "Last Update " +
-                    new Date(comment.Last_Update).toLocaleString('nl-BE', { day: '2-digit', month: 'long', year: 'numeric' }) :
-                    "comment at " +
-                    new Date(comment.CommentAt).toLocaleString('nl-BE', { day: '2-digit', month: 'long', year: 'numeric' })
-                  }</span>
-                </div>
-              </Col>
-            </Row>
-            {/* responses map */}
-            {Number(SeeResponses[0]) === Number(index) && SeeResponses[1] === true ?
-
-              GetComments.map((e, index) => e.child_of !== comment._id ? '' : <Row key={index + "res"} className='pb-1 mx-4'>
-                <Col xs={12} sm={12} md={12} lg={6} xl={6} xxl={6} className='pb-2  border border-4 rounded-2 mb-2' key={index}>
-                  <div className='d-flex justify-content-between '>
-                    <h4 className='pt-3 pb-3 px-3 my-4'><span className='CommentFirstLetter '>{e.username[0].toUpperCase()}</span>{e.username}</h4>
-                    {e.verifiedBuyer === true ? <span>Verified Buyer</span> : ''}
-                  </div>
-                  <div className="mx-3 fs-5">{e.comment} </div>
-
-                  <div className='mx-1 my-2 d-flex justify-content-between'>
-                    <div>
-                      {/* <button className='border border-0  px-2 py-0 fs-6'onClick={Reply} id={index}>Reply</button> */}
-                      {/* { GetComments.map((e,index)=>e.child_of).includes(comment._id)? 
-                   <button key={index} className='border border-0' onClick={CommentResponses}>
-                      responses {GetComments.filter(e=>e.child_of ==comment._id).length} </button>:''} */}
-                    </div>
-                    <span>{comment.Last_Update !== null ?
-                      "Last Update " +
-                      new Date(comment.Last_Update).toLocaleString('nl-BE', { day: '2-digit', month: 'long', year: 'numeric' }) :
-                      "comment at " +
-                      new Date(comment.CommentAt).toLocaleString('nl-BE', { day: '2-digit', month: 'long', year: 'numeric' })
-
-                    }</span>
-                  </div>
-                </Col>
-              </Row>) : ''
-            }
-            {/* open response Form on click if the state is true && id match with button index */}
-            {Number(ReplyState[0]) === Number(index) && ReplyState[1] === true ?
-              <Row >
-                <Form>
-                  <Row>
-
-                
-                <Col xs={12} sm={12} md={12} lg={4} xl={4} xxl={4}>
-                  <h4 className='pt-1 pb-1 px-1 my-4'><span className='CommentFirstLetter '>{user.username[0].toUpperCase()}</span>{user.username}</h4>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                    <Form.Control as="textarea" placeholder='comment' rows={2} ref={ResponseComment} required={true} />
-                  </Form.Group>
-                </Col>
-                <Col xs={12} sm={12} md={12} lg={2} xl={2} xxl={2} className='d-flex d-flex-column justify-content-start align-items-end mb-4'>
-                  <button className='CommentButton' onClick={ReplyComment} id={comment._id}  type='submit'>Reply</button>
-                  <button className='CommentButton mx-2' onClick={(e) => setReplyState([index, false])} >Cancel</button></Col>
-
-                  </Row>
-                </Form>
-              </Row>
+    </Col>
+    <Col xs={12} sm={12} md={12} lg={2} xl={2} xxl={2} className='d-flex d-flex-column justify-content-start align-items-end mb-4'>
+      <button type='submit' className='CommentButton' onClick={PostComment}  >POST</button>
+      
+    </Col>
+    </Row> 
+    </Form>
+  </Row> : <h4 className="py-5"> You're not log in to  comment</h4>}
 
 
-              : ''}</div>)
-        ) : ''}
+
+{/* map comment && check if they are child */}
+{GetComments !== undefined ? GetComments.map((comment, index) => comment.child_of !== null ? '' :
+  (<div key={index} id={index}>
+    <Row key={myKey} className='pb-1' id = {myKey+index}>
+      <Col xs={12} sm={12} md={12} lg={6} xl={6} xxl={6} className='  border border-4 rounded-2 mb-2' key={`${myKey}Col`} id={myKey}>
+        <div className='d-flex justify-content-between ' key={`${myKey}${index}container`}>
+          <h4 className='pt-3 pb-3 px-3 my-3' key={`${myKey}header`}><span className='CommentFirstLetter '>{comment.username[0].toUpperCase()}</span>{comment.username}</h4>
+          {comment.verifiedBuyer === true ? <span key={myKey+"verifiedBuyer"}>Verified Buyer</span> : ''}
+        </div >
+        <div key={myKey+index+"comment"} className="mx-3 fs-5">{comment.comment} </div>
+
+        <div className=' d-flex justify-content-between'key={index}>
+          <div>
+            {/* reply button */}
+            <button className='border border-0 commentButton mx-3 py-2 fs-5'
+             style={commentButtonStyle} onClick={Reply} id={index}>Reply</button>
+            {/* response button */}
+           
+            {GetComments.map(e => e.child_of).includes(comment._id) ?
+              <button className='border border-0 commentButton mx-3 py-2 fs-5'
+               style={commentButtonStyle} onClick={CommentResponses} id={index}>
+
+            {GetComments.filter(e => e.child_of === comment._id).length} response </button> : ''}
+          </div>
+          <div className='d-flex align-items-end'>{comment.Last_Update !== null ?
+            "Last Update " +
+            new Date(comment.Last_Update).toLocaleString('nl-BE', { day: '2-digit', month: 'long', year: 'numeric' }) :
+            "comment at " +
+            new Date(comment.CommentAt).toLocaleString('nl-BE', { day: '2-digit', month: 'long', year: 'numeric' })
+          }</div>
+        </div>
+      </Col>
+    </Row>
+       {/* open response Form on click if the state is true && id match with button index */}
+       {Number(ReplyState[0]) === Number(index) && ReplyState[1] === true ?
+      <Row >
+        <Form>
+          <Row>
+
+        
+        <Col xs={12} sm={12} md={12} lg={4} xl={4} xxl={4}>
+          <h4 className='pt-1 pb-1 px-1 my-4'><span className='CommentFirstLetter '>{user.username[0].toUpperCase()}</span>{user.username}</h4>
+          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+            <Form.Control as="textarea" placeholder='comment' rows={2} ref={ResponseComment} required={true} />
+          </Form.Group>
+        </Col>
+        <Col xs={12} sm={12} md={12} lg={2} xl={2} xxl={2} className='d-flex d-flex-column justify-content-start align-items-end mb-4'>
+          <button className='CommentButton' onClick={ReplyComment} id={comment._id}  type='submit'>Reply</button>
+          <button className='CommentButton mx-2' onClick={(e) => setReplyState([index, false])} >Cancel</button></Col>
+
+          </Row>
+        </Form>
+      </Row>
 
 
-      </Container>
+      : ''}
+    {/*comment responses   map */}
+    {Number(SeeResponses[0]) === Number(index) && SeeResponses[1] === true ?
+
+      GetComments.map((e, index) => e.child_of !== comment._id ? '' : <Row key={myKey+index + "res"} className='pb-1 mx-4' id={myKey+index + "res"}>
+        <Col xs={12} sm={12} md={12} lg={6} xl={6} xxl={6} className='  border border-4 rounded-2 mb-2' key={index}>
+          <div className='d-flex justify-content-between '>
+            <h4 className='pt-3 pb-3 px-3 my-4'><span className='CommentFirstLetter '>{e.username[0].toUpperCase()}</span>{e.username}</h4>
+            {e.verifiedBuyer === true ? <span>Verified Buyer</span> : ''}
+          </div>
+          <div className="mx-3 fs-5">{e.comment} </div>
+
+          <div className='mx-1  d-flex justify-content-between'>
+            <div>
+            
+            </div>
+            <div className='d-flex align-items-end'>{comment.Last_Update !== null ?
+              "Last Update " +
+              new Date(comment.Last_Update).toLocaleString('nl-BE', { day: '2-digit', month: 'long', year: 'numeric' }) :
+              "comment at " +
+              new Date(comment.CommentAt).toLocaleString('nl-BE', { day: '2-digit', month: 'long', year: 'numeric' })
+
+            }</div>
+          </div>
+        </Col>
+      </Row>) : ''
+    }
+ </div>)
+) : <h4 className='mt-5'> No one has comment  yet </h4>}
+
+
+</Container>
     </Container>
   )
 }

@@ -171,7 +171,7 @@ export default function ProductDetail() {
       },
       body: JSON.stringify({
         "product_id": id,
-        "user_id": user ? user._id : '',
+        "user_id":user._id ,
         "username": user.username,
         "comment": Comment.current.value,
         "child_of": null
@@ -206,8 +206,8 @@ export default function ProductDetail() {
       },
       body: JSON.stringify({
         "product_id": id,
-        "user_id": user ? user._id : '',
-        "username": user ? user.username : '',
+        "user_id": user._id,
+        "username": user.username,
         "comment": ResponseComment.current.value,
         "child_of": e.target.id
       })

@@ -432,7 +432,7 @@ export default function ProductDetail() {
             {/* response button */}
            
             {GetComments.map(e => e.child_of).includes(comment._id) ?
-              <button className='border border-0 commentButton mx-3 py-2 fs-5'
+              <button className=' border-0 commentButton mx-3 py-2 fs-5'
                style={commentButtonStyle} onClick={CommentResponses} id={index}>
 
             {GetComments.filter(e => e.child_of === comment._id).length} response </button> : ''}

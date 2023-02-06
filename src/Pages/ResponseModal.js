@@ -18,7 +18,7 @@ export default function ResponseModal(props) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide} className='bg-dark text-light border border-0'>Close</Button>
+        <Button onClick={props.onHide} className='bg-dark text-light  border-0'>Close</Button>
       </Modal.Footer>
     </Modal>
   );

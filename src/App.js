@@ -18,19 +18,13 @@ import CreateUser from './Pages/Dashboard/CreateUser'
 import ModifyUser from './Pages/Dashboard/ModifyUser'
 import ThankYou from './Pages/ThankYou'
 import PasswordUpdate from './Pages/PasswordUpdate'
-
-
 import server from './variable'
-
 import PrivateRoutes from './Context/PrivateRoutes'
-
 import { ThemeProvider } from './Context/ColorMode'
 import History from './Pages/History'
 
- export const UserContexts = createContext(null)
-
-
- 
+//============================ context==========
+export const UserContexts = createContext(null)
 
 function App() {
 
@@ -46,7 +40,7 @@ function App() {
 
 
 
-//============================ context==========
+
 
   //=======================================================Admin/Dashboard====================
 
@@ -57,10 +51,12 @@ function App() {
   const[AdminGetAllUser,setAdminGetAllUser] = useState([])
   const[AdminSortUserBy,setAdminSortUserBy] = useState('username')
   const[AdminInputSearchUser,setAdminInputSearchUser]=useState('')
+  const [Email,setEmail] = useState('')
+
 
 //  const server= process.env.REACT_APP_SERVER
-
-//Admin productControl
+ 
+//Admin productControl information
 useEffect(()=>{
   fetch(`${server}/Product/?${AdminCategoriesQueryProduct}=${AdminInputSearchProduct}`)
  .then(res=>res.json())
@@ -70,7 +66,9 @@ useEffect(()=>{
  }) 
 },[AdminCategoriesQueryProduct,AdminInputSearchProduct]) 
 //=============== 
-//Admin userControls
+
+
+//Admin userControls information
 
 useEffect(
   ()=>{
@@ -85,6 +83,7 @@ useEffect(
 
 
   //================================User===========================
+  //  getting user
 useEffect(()=>{
   const getUser = async() =>{
     await fetch(`${server}/Users/user`,{
@@ -102,8 +101,7 @@ getUser()
 
 
  
-
-
+// login
 
   const login = async(e)=>{
     e.preventDefault()
@@ -154,7 +152,7 @@ useEffect(() => {
   }
   getProduct()
 }
-  , [AllProduct])
+  , [])
 
 
   const inputHandler = (e=>{
@@ -176,14 +174,12 @@ useEffect(() => {
       }
     }
       )  
-      // console.log(inputValue)
-      // console.log(Search)
+
       return setProductInputSearch(Search)  
   })
   
   const categoriesFilter = ( (e) => {
     const myFilter = AllProduct.filter((AllProduct)=>{ return AllProduct.Categories === e.target.text})
-    // console.log(e.target.text , myFilter)
       return setFilteredByCategories(myFilter) }
      
      )
@@ -198,11 +194,10 @@ useEffect(() => {
     }
      categories()
   }
-    , [categories])
+    , [])
 
     // ======================================================emails 
-    //http://localhost:3004/NewsLetter 
-    const [Email,setEmail] = useState('')
+
 
     const newsLetter = async(e)=>{
       // e.preventDefault()
@@ -250,10 +245,11 @@ useEffect(() => {
       <Route path='/:id' element={<Detail/>}/>
 
       
-          {/* route for protection */}
+         
 
       <Route path='/ThankYou' element={<ThankYou/>}/>
       <Route path='/PasswordUpdate/:id' element={<PasswordUpdate/>}/>
+       {/* protected route  */}
 
       <Route element={<PrivateRoutes user={user}/>}>
         <Route path='/Dashboard' element={<Dashboard/>} />

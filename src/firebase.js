@@ -1,10 +1,7 @@
 import { initializeApp } from 'firebase/app';
-// import { getAnalytics } from "firebase/analytics";
 import { getStorage} from 'firebase/storage'
-// deleteObject,
 
 
-// TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
     apiKey: "AIzaSyCkTINyXr1CPSiUvAFmlXnhL0CfnvGji4s",
     authDomain: "endproject-372414.firebaseapp.com",
@@ -21,6 +18,5 @@ const app = initializeApp(firebaseConfig);
 
 
 export const storage  = getStorage(app)
-// export const deleteObjectfromStorage = deleteObject(app)
 
 

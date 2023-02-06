@@ -30,7 +30,7 @@ export default function Register() {
 
 
   const AddNewUser = (e) => {
-      e.preventDefault() 
+    e.preventDefault()
     fetch(`${server}/Users/register`, {
       method: 'POST',
       headers: {
@@ -46,7 +46,7 @@ export default function Register() {
         "Gender": Gender.current.value,
         "Country": Country.current.value,
         "City": City.current.value,
-        "PostCode": PostCode.current.value, 
+        "PostCode": PostCode.current.value,
         "Street": Street.current.value,
         "NumberOfStreet": NumberOfStreet.current.value
       })
@@ -56,7 +56,7 @@ export default function Register() {
         setShow(true)
         setErrorMSG(data.msg)
       })
-      .then((e)=>   messageRef.current?.scrollIntoView({behavior: 'smooth'}))
+      .then((e) => messageRef.current?.scrollIntoView({ behavior: 'smooth' }))
   }
 
   // pop up msg 
@@ -76,8 +76,8 @@ export default function Register() {
             {ErrorMSG !== undefined ?
               ErrorMSG[0].msg !== undefined ?
                 (
-                  show ? <Alert  variant="danger" onClose={() => setShow(false)} dismissible>
-                    {ErrorMSG.map((e,index) => (<Alert.Heading key={index}>{e.msg}</Alert.Heading>
+                  show ? <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+                    {ErrorMSG.map((e, index) => (<Alert.Heading key={index}>{e.msg}</Alert.Heading>
                     ))}
                     <div className="d-flex justify-content-end">
 
@@ -86,8 +86,8 @@ export default function Register() {
 
 
                 ) : (
-                  show ? <Alert  variant="success" onClose={() => setShow(false)} dismissible>
-                    {ErrorMSG.map((e,index) => (<Alert.Heading key={index}>{e.message}</Alert.Heading>
+                  show ? <Alert variant="success" onClose={() => setShow(false)} dismissible>
+                    {ErrorMSG.map((e, index) => (<Alert.Heading key={index}>{e.message}</Alert.Heading>
                     ))}
                     <Alert.Heading>{ErrorMSG.message}</Alert.Heading>
 
@@ -155,7 +155,7 @@ export default function Register() {
             <InputGroup className="mb-3">
               <Form.Control
                 placeholder="Repeat Password"
-                aria-label="Password2"
+                aria-label="Repeat Password"
                 aria-describedby="basic-addon1"
                 type="password"
                 required
@@ -175,8 +175,7 @@ export default function Register() {
             <InputGroup className="mb-3">
               <Form.Control
                 placeholder="First Name"
-                aria-label="Recipient's username"
-                aria-describedby="basic-addon2"
+                aria-label="First Name"
                 type="text"
                 required
                 name="FirstName"
@@ -185,14 +184,13 @@ export default function Register() {
               />
             </InputGroup>
 
-            <Form.Label>Last Name</Form.Label>
+            <Form.Label  aria-label="Last Name" >Last Name</Form.Label>
             <InputGroup className="mb-3">
               <Form.Control
-              type="text"
-              required
+                type="text"
+                required
                 placeholder="Last Name"
-                aria-label="Recipient's username"
-                aria-describedby="basic-addon2"
+                aria-label="Last Name"
                 name="LastName"
                 ref={LastName}
 
@@ -201,30 +199,20 @@ export default function Register() {
             </InputGroup>
 
             <Form.Label aria-label="Name" >Gender</Form.Label>
-            {/* <InputGroup className="mb-3 bg-light rounded-1 py-2" onChange={genderRadio} required>
-              
-              <label for='men' className=" mx-3 fs-5" >Men</label>
-              <input type="radio" name='Gender' value='men' id="men" className="fs-5" ></input>
-
-              <label for='woman' name='Gender' value='woman' className=" mx-3 fs-5">Woman</label>
-              <input type="radio" name='Gender' value='woman' id="woman" className=" mx-3 " ></input>
-
-            </InputGroup > */}
 
 
 
-<InputGroup className="mb-3">
+            <InputGroup className="mb-3">
               <Form.Control
                 placeholder="Gender"
                 aria-label="Gender"
-                aria-describedby="basic-addon1"
                 required
                 name="Gender"
                 ref={Gender}
 
 
               />
-</InputGroup>
+            </InputGroup>
 
             <Form.Label aria-label="Name" >Country</Form.Label>
 
@@ -232,7 +220,6 @@ export default function Register() {
               <Form.Control
                 placeholder="Country"
                 aria-label="Country"
-                aria-describedby="basic-addon1"
                 required
                 name="Country"
                 ref={Country}
@@ -253,13 +240,13 @@ export default function Register() {
 
               />
             </InputGroup>
-            <Form.Label aria-label="Name" >Post Code</Form.Label>
+            <Form.Label aria-label="Post Code" >Post Code</Form.Label>
 
             <InputGroup className="mb-3">
               <Form.Control
                 placeholder="Post Code"
-                aria-label="Name"
-                aria-describedby="basic-addon1"
+                aria-label="Post Code"
+
                 required
                 name="Post Code"
                 ref={PostCode}
@@ -267,13 +254,12 @@ export default function Register() {
 
               />
             </InputGroup>
-            <Form.Label aria-label="Name" >Street</Form.Label>
+            <Form.Label aria-label="Street" >Street</Form.Label>
 
             <InputGroup className="mb-3">
               <Form.Control
-                placeholder="Username"
-                aria-label="Name"
-                aria-describedby="basic-addon1"
+                placeholder="Street"
+                aria-label="Street"
                 required
                 name="Street"
                 ref={Street}
@@ -281,13 +267,12 @@ export default function Register() {
 
               />
             </InputGroup>
-            <Form.Label aria-label="Name" >Number Of Street</Form.Label>
+            <Form.Label aria-label="Number of Street" >Number Of Street</Form.Label>
 
             <InputGroup className="mb-3">
               <Form.Control
-                placeholder="Username"
-                aria-label="Name"
-                aria-describedby="basic-addon1"
+                placeholder="Number of Street"
+                aria-label="Number of Street"
                 required
                 name="NumberOfStreet"
                 ref={NumberOfStreet}
@@ -303,7 +288,7 @@ export default function Register() {
       </Row>
 
     </Container>
-  ); 
+  );
 }
 
 

@@ -76,7 +76,7 @@ export default function ProductCard({ Product }) {
 
 
 
-  }, [Product])
+  }, [Product, value])
   //Product, user, value
 
 

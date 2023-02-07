@@ -152,7 +152,7 @@ useEffect(() => {
   }
   getProduct()
 }
-  , [])
+  , [AllProduct])
 
 
   const inputHandler = (e=>{

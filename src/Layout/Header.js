@@ -5,17 +5,27 @@ import { GiShoppingCart,GiHearts } from 'react-icons/gi';
 import {Popover,OverlayTrigger} from 'react-bootstrap'
 import{MdModeNight,MdLightMode} from 'react-icons/md'
 import {useTheme,useThemeUpdate} from '../Context/ColorMode'
+import ResponseModal from '../Pages/ResponseModal';
 
 
- function Header({username,password,login,user,logOut ,categories,categoriesFilter,inputHandler,setFilteredByCategories }) {
+ function Header({username,password,login,user,logOut ,categories,categoriesFilter,inputHandler,setFilteredByCategories,LoginMessage }) {
 
   const [NavBarVariant,setNavBarVariant]= useState('light')
+  const [modalShow, setModalShow] = useState(false);
+
   const darkTheme = useTheme()
   const toggleTheme = useThemeUpdate()
+
   const themeStyle = {
     backgroundColor:darkTheme?'#333 ':'#f6f6f6',
     color:darkTheme?'#f6f6f6':'#333',
     // color:h : darkTheme?'#f6f6f6':'#333'
+  }
+  const startLogin=(e)=>{
+    e.preventDefault()
+    login();
+    if(LoginMessage ==="successfully auth" || ""){return}
+    setModalShow(true)
   }
  
   const checkColor = darkTheme?<div style={{ width:"7rem" ,cursor:"pointer"}} className='d-flex flex-column justify-content-start align-items-center fs-3 my-1'><MdModeNight className='text-primary' /><h6 >Dark Mode</h6></div> :<div style={{ width:"7rem",cursor:"pointer"}} className='d-flex flex-column justify-content-start align-items-center fs-3 my-1'><MdLightMode className=' text-warning' /><h6>Light Mode</h6></div>
@@ -36,15 +46,12 @@ import {useTheme,useThemeUpdate} from '../Context/ColorMode'
         <input placeholder="password" name="password" className="mt-2 rounded-2"required ref={password} type="password"  autoComplete='current-password' ></input>
           <Row><Link to="/Register" className='mt-2'> You don't have Account yet ?</Link></Row>
           <Row><Link to="/ForgotPassword" className='mt-1 '> Forgot your Password ?</Link></Row>
-        <button onClick={login}  className='mt-3 px-3 py-2 button'><span></span><span></span><span></span><span></span>Login</button>
+        <button onClick={startLogin}  className='mt-3 px-3 py-2 button'><span></span><span></span><span></span><span></span>Login</button>
         </form> 
         </Row>
         </Container>
       </Popover.Body>
     </Popover>
-
-  
-
   );
   const nav = useNavigate()
   const myNav = ()=>{
@@ -186,6 +193,11 @@ import {useTheme,useThemeUpdate} from '../Context/ColorMode'
       </Container>
     </Navbar>
     </Row>
+    <ResponseModal  
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        msg={LoginMessage}
+      />
     </Container>
  
 

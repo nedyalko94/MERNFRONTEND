@@ -33,7 +33,7 @@ useEffect(()=>{
 {Top10Trending !== undefined ? Top10Trending.map((Product,index)=>
   <Col  key={index} xs={12} sm={6} md={6} lg={4} xl={3} xxl={2}><ProductCard Product={Product.product} key={index}/></Col>
 
-):<h1>no product have been found</h1> }
+):null }
 </Row>
       </Container> 
 

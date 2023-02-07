@@ -31,7 +31,7 @@ export default function History({ user }) {
 
         }
         History()
-    }, [])
+    }, [user]) 
 
     return (
         <Container fluid className='mainContainer' style={themeStyle}>

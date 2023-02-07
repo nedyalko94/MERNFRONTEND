@@ -22,6 +22,7 @@ import server from './variable'
 import PrivateRoutes from './Context/PrivateRoutes'
 import { ThemeProvider } from './Context/ColorMode'
 import History from './Pages/History'
+import Page404 from './Pages/404'
 
 //============================ context==========
 export const UserContexts = createContext(null)
@@ -37,7 +38,7 @@ function App() {
   const [FilteredByCategories, setFilteredByCategories]= useState([])
   const[ProductInputSearch,setProductInputSearch]= useState(undefined)
   const [msgModal,setMsgModal] = useState("")
-
+const [LoginMessage,setLoginMessage] = useState('')
 
 
 
@@ -104,7 +105,7 @@ getUser()
 // login
 
   const login = async(e)=>{
-    e.preventDefault()
+    // e.preventDefault()
     await fetch(`${server}/Users/login`, {
        credentials: 'include',
        method:'POST',
@@ -118,7 +119,7 @@ getUser()
    })
    .then(res=> res.json())
    .then(result=>{
-    // alert(result.msg) 
+    setLoginMessage(result.msg) 
        if(result.user){ return setUser(result.user)  }
       
     })
@@ -153,6 +154,7 @@ useEffect(() => {
   getProduct()
 }
   , [AllProduct])
+  // AllProduct
 
 
   const inputHandler = (e=>{
@@ -229,7 +231,7 @@ useEffect(() => {
 
 <Layout username={username} user={user} password={password} login={login} logOut={logOut} categories={categories}
  categoriesFilter={categoriesFilter} inputHandler={inputHandler} setFilteredByCategories={setFilteredByCategories}
- setEmail={setEmail} newsLetter={newsLetter} msgModal={msgModal} setMsgModal={setMsgModal}
+ setEmail={setEmail} newsLetter={newsLetter} msgModal={msgModal} setMsgModal={setMsgModal} LoginMessage={LoginMessage}
  >
 
    <Routes>
@@ -261,7 +263,8 @@ useEffect(() => {
         <Route path='/ModifyUser' element={<ModifyUser AdminGetAllUser={AdminGetAllUser} setAdminSortUserBy={setAdminSortUserBy} setAdminInputSearchUser ={setAdminInputSearchUser} />  } />
 
       </Route>
- 
+       <Route path='*' element={<Page404/>}/>
+
    </Routes>
 
    </Layout> 

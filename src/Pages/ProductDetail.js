@@ -417,7 +417,7 @@ export default function ProductDetail() {
 {GetComments !== undefined ? GetComments.map((comment, index) => comment.child_of !== null ? '' :
   (<div key={index} id={index}>
     <Row key={myKey} className='pb-1' id = {myKey+index}>
-      <Col xs={12} sm={12} md={12} lg={6} xl={6} xxl={6} className='  border border-4 rounded-2 mb-2' key={`${myKey}Col`} id={myKey}>
+      <Col xs={12} sm={12} md={12} lg={6} xl={6} xxl={6} className='   border-4 rounded-2 mb-2' key={`${myKey}Col`} id={myKey}>
         <div className='d-flex justify-content-between ' key={`${myKey}${index}container`}>
           <h4 className='pt-3 pb-3 px-3 my-3' key={`${myKey}header`}><span className='CommentFirstLetter '>{comment.username[0].toUpperCase()}</span>{comment.username}</h4>
           {comment.verifiedBuyer === true ? <span key={myKey+"verifiedBuyer"}>Verified Buyer</span> : ''}
@@ -427,12 +427,12 @@ export default function ProductDetail() {
         <div className=' d-flex justify-content-between'key={index}>
           <div>
             {/* reply button */}
-            <button className='border border-0 commentButton mx-3 py-2 fs-5'
+            <button className='border  commentButton mx-3 py-2 fs-5'
              style={commentButtonStyle} onClick={Reply} id={index}>Reply</button>
             {/* response button */}
            
             {GetComments.map(e => e.child_of).includes(comment._id) ?
-              <button className='border border-0 commentButton mx-3 py-2 fs-5'
+              <button className='border  commentButton mx-3 py-2 fs-5'
                style={commentButtonStyle} onClick={CommentResponses} id={index}>
 
             {GetComments.filter(e => e.child_of === comment._id).length} response </button> : ''}
@@ -473,7 +473,7 @@ export default function ProductDetail() {
     {Number(SeeResponses[0]) === Number(index) && SeeResponses[1] === true ?
 
       GetComments.map((e, index) => e.child_of !== comment._id ? '' : <Row key={myKey+index + "res"} className='pb-1 mx-4' id={myKey+index + "res"}>
-        <Col xs={12} sm={12} md={12} lg={6} xl={6} xxl={6} className='  border border-4 rounded-2 mb-2' key={index}>
+        <Col xs={12} sm={12} md={12} lg={6} xl={6} xxl={6} className='   border-4 rounded-2 mb-2' key={index}>
           <div className='d-flex justify-content-between '>
             <h4 className='pt-3 pb-3 px-3 my-4'><span className='CommentFirstLetter '>{e.username[0].toUpperCase()}</span>{e.username}</h4>
             {e.verifiedBuyer === true ? <span>Verified Buyer</span> : ''}

@@ -153,8 +153,7 @@ DefaultShoppingList()
                   </Form.Select>
                 </Col>)
               ))
-              : <h3 className='d-flex justify-content-center '>  Shopping Car is Empty</h3>
-
+              : <Col><div className='d-flex justify-content-center '>  Shopping Car is Empty</div> </Col>
             }
           </Row>
         </Col>

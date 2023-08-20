@@ -64,9 +64,14 @@ useEffect(()=>{
 useEffect(()=>{
  let DefaultShoppingList=()=>{
   let variable = []
-   ShopList.forEach(element =>  variable.push([1, element]))
-  // console.log(ShopListWithQuantity)
-  setShopListWithQuantity(variable)
+  //  error test 
+  if (ShopList === null ) return 
+  else {
+    ShopList.forEach(element =>  variable.push([1, element]))
+    // console.log(ShopListWithQuantity)
+    setShopListWithQuantity(variable)
+  }
+ 
 } 
 DefaultShoppingList()
 

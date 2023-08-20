@@ -126,7 +126,7 @@ DefaultShoppingList()
       <Row xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
         <Col  xs={12} sm={12} md={12} lg={9} xl={9} xxl={9}>
           <Row xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-            { ShopList !== null || []  ?
+            { ShopList !== null && ShopList !== []  ?
               (ShopList.map((Product, index) => (
                 <Col className='position-relative px-3' xs={12} sm={6} md={6} lg={4} xl={4} xxl={3} key={index+"c"}>
                   <CloseButton className=' position-absolute top-0 end-0 translate-middle ' key={index+"cb"}
